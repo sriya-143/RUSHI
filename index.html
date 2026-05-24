@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Cinematic Memory Experience</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= RESET ================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+overflow:hidden;
+background:black;
+font-family:'Poppins',sans-serif;
+height:100vh;
+color:white;
+position:relative;
+}
+
+/* ================= CINEMATIC BARS ================= */
+
+body::before,
+body::after{
+
+content:"";
+
+position:fixed;
+
+left:0;
+
+width:100%;
+height:30px;
+
+background:black;
+
+z-index:999;
+
+}
+
+body::before{
+top:0;
+}
+
+body::after{
+bottom:0;
+}
+
+/* ================= GLITTERS ================= */
+
+.glitter-container{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+overflow:hidden;
+
+pointer-events:none;
+
+z-index:1;
+
+}
+
+.glitter{
+
+position:absolute;
+
+background:gold;
+
+border-radius:50%;
+
+opacity:.8;
+
+animation:float linear infinite;
+
+box-shadow:
+0 0 10px gold,
+0 0 20px gold;
+
+}
+
+@keyframes float{
+
+0%{
+transform:translateY(100vh) scale(0);
+opacity:0;
+}
+
+10%{
+opacity:1;
+}
+
+100%{
+transform:translateY(-120vh) scale(1);
+opacity:0;
+}
+
+}
+
+/* ================= DUST ================= */
+
+.dust{
+
+position:absolute;
+
+width:2px;
+height:2px;
+
+background:white;
+
+border-radius:50%;
+
+opacity:.1;
+
+animation:dustMove linear infinite;
+
+pointer-events:none;
+
+}
+
+@keyframes dustMove{
+
+0%{
+transform:translateY(100vh);
+}
+
+100%{
+transform:translateY(-100vh);
+}
+
+}
+
+/* ================= FILM GRAIN ================= */
+
+.grain{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+pointer-events:none;
+
+opacity:.05;
+
+z-index:2;
+
+background-image:
+url("https://grainy-gradients.vercel.app/noise.svg");
+
+}
+
+/* ================= LIGHT LEAK ================= */
+
+.light-leak{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+pointer-events:none;
+
+z-index:3;
+
+background:
+radial-gradient(
+circle at top left,
+rgba(255,180,0,.18),
+transparent 40%
+),
+
+radial-gradient(
+circle at bottom right,
+rgba(255,140,0,.12),
+transparent 40%
+);
+
+animation:lightMove 8s infinite alternate;
+
+}
+
+@keyframes lightMove{
+
+from{
+transform:translateX(-20px);
+}
+
+to{
+transform:translateX(20px);
+}
+
+}
+
+/* ================= INTRO ================= */
+
+.intro{
+
+position:absolute;
+
+width:100%;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+background:black;
+
+z-index:10;
+
+padding:20px;
+
+text-align:center;
+
+}
+
+.presenting{
+
+letter-spacing:10px;
+
+font-size:16px;
+
+color:#aaa;
+
+animation:fade 2s ease;
+
+}
+
+.main-title{
+
+font-family:'Cinzel',serif;
+
+font-size:80px;
+
+margin-top:20px;
+
+text-shadow:
+0 0 15px white,
+0 0 35px gold,
+0 0 70px gold;
+
+animation:titleZoom 3s ease;
+
+line-height:1.1;
+
+}
+
+.subtitle{
+
+margin-top:20px;
+
+letter-spacing:3px;
+
+font-size:16px;
+
+color:#ccc;
+
+animation:fade 3s ease;
+
+}
+
+/* ================= BUTTON ================= */
+
+.open-btn{
+
+margin-top:40px;
+
+padding:15px 40px;
+
+border:none;
+
+border-radius:50px;
+
+background:gold;
+
+color:black;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.5s;
+
+box-shadow:
+0 0 20px gold;
+
+}
+
+.open-btn:hover{
+
+transform:scale(1.08);
+
+box-shadow:
+0 0 40px gold;
+
+}
+
+/* ================= BOOK SECTION ================= */
+
+.book-section{
+
+position:absolute;
+
+width:100%;
+height:100vh;
+
+display:none;
+
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+z-index:5;
+
+padding:20px;
+
+}
+
+/* ================= PAGE ================= */
+
+.page{
+
+width:390px;
+max-width:92vw;
+
+height:540px;
+max-height:72vh;
+
+background:
+linear-gradient(
+135deg,
+#1a1a1a,
+#080808
+);
+
+border-radius:18px;
+
+padding:18px;
+
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+position:relative;
+
+overflow:hidden;
+
+border:1px solid rgba(255,255,255,.08);
+
+box-shadow:
+0 0 50px rgba(255,215,0,.15);
+
+transition:
+transform .2s ease;
+
+animation:borderGlow 3s infinite alternate;
+
+}
+
+/* BORDER GLOW */
+
+@keyframes borderGlow{
+
+from{
+box-shadow:
+0 0 20px rgba(255,215,0,.1);
+}
+
+to{
+box-shadow:
+0 0 60px rgba(255,215,0,.25);
+}
+
+}
+
+/* PAGE SHINE */
+
+.page::before{
+
+content:"";
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+background:
+linear-gradient(
+to right,
+rgba(255,255,255,.12),
+transparent 20%
+);
+
+pointer-events:none;
+
+}
+
+/* ================= PAGE TURN ================= */
+
+.page.turn{
+
+animation:pageTurn 1.2s ease;
+
+}
+
+@keyframes pageTurn{
+
+0%{
+transform:rotateY(0deg);
+}
+
+50%{
+transform:rotateY(-90deg) scale(.96);
+}
+
+100%{
+transform:rotateY(0deg);
+}
+
+}
+
+/* ================= CAMERA FLASH ================= */
+
+.flash{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:white;
+
+opacity:0;
+
+pointer-events:none;
+
+z-index:9999;
+
+}
+
+.flash.active{
+
+animation:cameraFlash .5s ease;
+
+}
+
+@keyframes cameraFlash{
+
+0%{
+opacity:0;
+}
+
+50%{
+opacity:.7;
+}
+
+100%{
+opacity:0;
+}
+
+}
+
+/* ================= POLAROID ================= */
+
+.polaroid{
+
+background:white;
+
+padding:12px 12px 40px 12px;
+
+border-radius:6px;
+
+transform:rotate(-2deg);
+
+box-shadow:
+0 15px 40px rgba(0,0,0,.5);
+
+animation:dropPhoto 1s ease;
+
+}
+
+@keyframes dropPhoto{
+
+0%{
+
+transform:
+translateY(-250px)
+rotate(-20deg)
+scale(.5);
+
+opacity:0;
+
+}
+
+100%{
+
+transform:
+translateY(0)
+rotate(-2deg)
+scale(1);
+
+opacity:1;
+
+}
+
+}
+
+.polaroid img{
+
+width:260px;
+max-width:65vw;
+
+height:300px;
+max-height:38vh;
+
+object-fit:cover;
+
+display:block;
+
+animation:slowZoom 8s infinite alternate;
+
+}
+
+@keyframes slowZoom{
+
+from{
+transform:scale(1);
+}
+
+to{
+transform:scale(1.06);
+}
+
+}
+
+/* ================= TEXT ================= */
+
+.date{
+
+margin-top:22px;
+
+font-size:12px;
+
+letter-spacing:4px;
+
+color:gold;
+
+text-align:center;
+
+}
+
+.words{
+
+margin-top:14px;
+
+font-size:17px;
+
+line-height:1.7;
+
+text-align:center;
+
+max-width:320px;
+
+animation:fadeText 1s ease;
+
+padding:0 10px;
+
+}
+
+@keyframes fadeText{
+
+from{
+opacity:0;
+transform:translateY(10px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+/* ================= TIMELINE ================= */
+
+.timeline{
+
+position:absolute;
+
+bottom:16px;
+
+display:flex;
+
+gap:10px;
+
+}
+
+.dot{
+
+width:10px;
+height:10px;
+
+border-radius:50%;
+
+background:#555;
+
+transition:.4s;
+
+}
+
+.dot.active{
+
+background:gold;
+
+transform:scale(1.3);
+
+box-shadow:
+0 0 10px gold;
+
+}
+
+/* ================= BUTTONS ================= */
+
+.controls{
+
+margin-top:25px;
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+justify-content:center;
+
+}
+
+.controls button{
+
+padding:12px 28px;
+
+border:none;
+
+border-radius:40px;
+
+background:white;
+
+font-size:15px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.4s;
+
+}
+
+.controls button:hover{
+
+background:gold;
+
+transform:scale(1.08);
+
+box-shadow:
+0 0 20px gold;
+
+}
+
+/* ================= PETALS ================= */
+
+.petal{
+
+position:fixed;
+
+top:-50px;
+
+width:18px;
+height:18px;
+
+background:
+radial-gradient(
+circle,
+gold,
+#ffcc00
+);
+
+clip-path:
+polygon(
+50% 0%,
+100% 50%,
+50% 100%,
+0% 50%
+);
+
+pointer-events:none;
+
+opacity:.9;
+
+z-index:999;
+
+animation:
+petalFall linear forwards,
+petalSpin linear infinite;
+
+filter:
+drop-shadow(0 0 10px gold);
+
+}
+
+@keyframes petalFall{
+
+0%{
+transform:
+translateY(-50px)
+translateX(0)
+rotate(0deg);
+
+opacity:1;
+}
+
+100%{
+transform:
+translateY(110vh)
+translateX(120px)
+rotate(360deg);
+
+opacity:0;
+}
+
+}
+
+@keyframes petalSpin{
+
+0%{
+rotate:0deg;
+}
+
+100%{
+rotate:360deg;
+}
+
+}
+
+/* ================= END SCREEN ================= */
+
+.end-screen{
+
+position:absolute;
+
+width:100%;
+height:100vh;
+
+display:none;
+
+justify-content:center;
+align-items:center;
+flex-direction:column;
+
+text-align:center;
+
+padding:20px;
+
+background:black;
+
+z-index:50;
+
+}
+
+.end-title{
+
+font-family:'Cinzel',serif;
+
+font-size:70px;
+
+text-shadow:
+0 0 15px white,
+0 0 40px gold;
+
+animation:pulse 2s infinite alternate;
+
+line-height:1.2;
+
+}
+
+.end-text{
+
+margin-top:30px;
+
+font-size:22px;
+
+line-height:2;
+
+color:#ddd;
+
+max-width:850px;
+
+}
+
+.credits{
+
+margin-top:45px;
+
+letter-spacing:4px;
+
+color:gold;
+
+animation:creditsMove 10s linear infinite;
+
+line-height:1.8;
+
+}
+
+@keyframes pulse{
+
+from{
+transform:scale(1);
+}
+
+to{
+transform:scale(1.04);
+}
+
+}
+
+@keyframes creditsMove{
+
+0%{
+transform:translateY(40px);
+opacity:0;
+}
+
+20%{
+opacity:1;
+}
+
+100%{
+transform:translateY(-40px);
+opacity:1;
+}
+
+}
+
+/* ================= GENERAL ANIMATIONS ================= */
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(20px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+@keyframes titleZoom{
+
+from{
+transform:scale(.5);
+opacity:0;
+}
+
+to{
+transform:scale(1);
+opacity:1;
+}
+
+}
+
+/* ================= MOBILE ================= */
+
+@media screen and (max-width:768px){
+
+body::before,
+body::after{
+height:18px;
+}
+
+.presenting{
+font-size:13px;
+letter-spacing:6px;
+}
+
+.main-title{
+font-size:42px;
+}
+
+.subtitle{
+font-size:13px;
+letter-spacing:2px;
+padding:0 10px;
+}
+
+.open-btn{
+padding:13px 30px;
+font-size:14px;
+}
+
+.page{
+
+width:92vw;
+height:auto;
+min-height:68vh;
+
+padding:14px;
+
+}
+
+.polaroid{
+
+padding:8px 8px 28px 8px;
+
+}
+
+.polaroid img{
+
+width:68vw;
+height:34vh;
+
+}
+
+.date{
+font-size:10px;
+letter-spacing:2px;
+}
+
+.words{
+font-size:14px;
+line-height:1.6;
+}
+
+.controls button{
+padding:10px 18px;
+font-size:13px;
+}
+
+.end-title{
+font-size:40px;
+}
+
+.end-text{
+font-size:16px;
+line-height:1.8;
+}
+
+.credits{
+font-size:11px;
+letter-spacing:2px;
+}
+
+.petal{
+width:12px !important;
+height:12px !important;
+}
+
+}
+
+/* ================= SMALL PHONES ================= */
+
+@media screen and (max-width:480px){
+
+.main-title{
+font-size:34px;
+}
+
+.page{
+width:94vw;
+}
+
+.polaroid img{
+
+width:72vw;
+height:30vh;
+
+}
+
+.words{
+font-size:13px;
+}
+
+.end-title{
+font-size:32px;
+}
+
+.end-text{
+font-size:14px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- FLASH -->
+
+<div class="flash" id="flash"></div>
+
+<!-- GLITTERS -->
+
+<div class="glitter-container" id="glitterContainer"></div>
+
+<!-- FILM GRAIN -->
+
+<div class="grain"></div>
+
+<!-- LIGHT LEAK -->
+
+<div class="light-leak"></div>
+
+<!-- INTRO -->
+
+<div class="intro" id="intro">
+
+<div class="presenting">
+PRESENTING
+</div>
+
+<div class="main-title">
+THE RUSHIKESH KHADE
+</div>
+
+<div class="subtitle">
+A CINEMATIC MEMORY
+</div>
+
+<button class="open-btn" onclick="startExperience()">
+OPEN THE STORY
+</button>
+
+</div>
+
+<!-- BOOK SECTION -->
+
+<div class="book-section" id="bookSection">
+
+<div class="page" id="page">
+
+<div class="polaroid" id="polaroid">
+
+<img id="photo">
+
+</div>
+
+<div class="date" id="date"></div>
+
+
+
+<div class="words" id="words">
+</div>
+
+<div class="timeline" id="timeline"></div>
+
+</div>
+
+<!-- BUTTONS -->
+
+<div class="controls">
+
+<button onclick="prevPage()">
+⬅ PREV
+</button>
+
+<button onclick="nextPage()">
+NEXT ➡
+</button>
+
+</div>
+
+</div>
+
+<!-- END SCREEN -->
+
+<div class="end-screen" id="endScreen">
+
+<div class="end-title">
+ABHI TOH SHURU HUA HAI
+</div>
+
+<div class="end-text">
+
+abhi aur bohot baki hai...<br><br>
+
+Many dreams are still waiting.<br>
+
+PROUD OF YOU ✨
+
+</div>
+
+<div class="credits">
+
+DIRECTED BY RUSHI<br>
+WRITTEN BY MEMORIES OF RUSHI<br>
+
+</div>
+
+</div>
+
+<script>
+
+/* ================= 30 MEMORIES ================= */
+
+const memories = [
+
+{
+photo:"1.jpeg",
+date:"",
+text:"Sweet Baby kitna cute hai na🥰."
+},
+
+{
+photo:"2.jpeg",
+date:"6 OCT 2021",
+text:"Naya naya free fire ka bhoot sawar tha abhi toh bohot khelta hai time nhi rehta hai karke"
+},
+
+{
+photo:"3.jpeg",
+date:"7 DEC 2021",
+text:"Hai chota sa par swag dekho iska dramebaaz."
+},
+
+{
+photo:"4.jpeg",
+date:"23 APRIL 2023",
+text:"happy lag rha hai kitna."
+},
+
+{
+photo:"5.jpeg",
+date:"1 OCT 2023",
+text:"R15 Rider😎."
+},
+
+{
+photo:"6.jpeg",
+date:"25 OCT 2023",
+text:"Dreams slowly turning into reality, phela prem iska."
+},
+
+{
+photo:"7.jpeg",
+date:"27 DEC 2023",
+text:"Audience Rushi ko dekh ke pagal thi AURA OF RUSHI😎."
+},
+
+{
+photo:"8.jpeg",
+date:"",
+text:"SEXY aur HOT banke ki puri koshish karta hai."
+},
+
+{
+photo:"9.jpeg",
+date:"",
+text:"40 days."
+},
+
+{
+photo:"10.jpeg",
+date:"",
+text:"Kabbadi Jersey."
+},
+
+{
+photo:"11.jpeg",
+date:"",
+text:"Dream bike kawasaki ."
+},
+
+{
+photo:"12.jpeg",
+date:"",
+text:"A sweet love with medals."
+},
+
+{
+photo:"13.jpeg",
+date:"",
+text:"kuch bhi ho yeh harr saturday mandir jarur jata hai."
+},
+
+{
+photo:"14.jpeg",
+date:"26 JAN 2025",
+text:"GYM winner boy🥳."
+},
+
+{
+photo:"15.jpeg",
+date:"",
+text:"Sabko Herogiri ati nhi aur iski jaati nhi😅."
+},
+
+{
+photo:"16.jpeg",
+date:"",
+text:"Yo police chamgain marathon."
+},
+
+{
+photo:"17.jpeg",
+date:"10 FEB 2026",
+text:"Jab iska khudka poster bana first with the Brand."
+},
+
+{
+photo:"18.jpeg",
+date:"13 FEB 2025",
+text:"Surprise from the brand."
+},
+
+{
+photo:"19.jpeg",
+date:"",
+text:"Kuch bhi ho jaye nakhre nhi jane chahiye inke."
+},
+
+{
+photo:"20.jpeg",
+date:"27 MAR 2025",
+text:"Muscular dole shole."
+},
+
+{
+photo:"21.jpeg",
+date:"",
+text:"Yeh stage pe aye aur Stage iska aura na bane impossible😎."
+},
+
+{
+photo:"22.jpeg",
+date:"",
+text:"Stage pe aane ke sath sath stage ko khudka bhi banke ata hai yeh."
+},
+
+{
+photo:"23.jpeg",
+date:"",
+text:"Bike Lover munda."
+},
+
+{
+photo:"24.jpeg",
+date:"",
+text:"The best chapters."
+},
+
+{
+photo:"25.jpeg",
+date:"",
+text:"Abhi aur baki hai photos nhi life mai achieve karna."
+},
+
+
+];
+
+/* ================= GLITTERS ================= */
+
+const glitterContainer =
+document.getElementById("glitterContainer");
+
+for(let i=0;i<140;i++){
+
+let glitter =
+document.createElement("div");
+
+glitter.classList.add("glitter");
+
+let size =
+Math.random()*4+1;
+
+glitter.style.width=size+"px";
+glitter.style.height=size+"px";
+
+glitter.style.left=
+Math.random()*100+"vw";
+
+glitter.style.animationDuration=
+(Math.random()*8+5)+"s";
+
+glitter.style.animationDelay=
+Math.random()*5+"s";
+
+glitterContainer.appendChild(glitter);
+
+}
+
+/* ================= DUST ================= */
+
+for(let i=0;i<90;i++){
+
+let dust =
+document.createElement("div");
+
+dust.classList.add("dust");
+
+dust.style.left=
+Math.random()*100+"vw";
+
+dust.style.animationDuration=
+(Math.random()*15+10)+"s";
+
+dust.style.animationDelay=
+Math.random()*5+"s";
+
+document.body.appendChild(dust);
+
+}
+
+/* ================= TIMELINE ================= */
+
+const timeline =
+document.getElementById("timeline");
+
+for(let i=0;i<memories.length;i++){
+
+let dot =
+document.createElement("div");
+
+dot.classList.add("dot");
+
+if(i===0){
+dot.classList.add("active");
+}
+
+timeline.appendChild(dot);
+
+}
+
+/* ================= START ================= */
+
+function startExperience(){
+
+document
+.getElementById("intro")
+.style.display="none";
+
+document
+.getElementById("bookSection")
+.style.display="flex";
+
+}
+
+/* ================= PETALS ================= */
+
+function createPetals(){
+
+for(let i=0;i<25;i++){
+
+let petal =
+document.createElement("div");
+
+petal.classList.add("petal");
+
+petal.style.left =
+Math.random()*100+"vw";
+
+let size =
+Math.random()*18+10;
+
+petal.style.width=size+"px";
+petal.style.height=size+"px";
+
+petal.style.animationDuration =
+(Math.random()*3+4)+"s";
+
+petal.style.animationDelay =
+(Math.random()*0.5)+"s";
+
+document.body.appendChild(petal);
+
+setTimeout(()=>{
+
+petal.remove();
+
+},7000);
+
+}
+
+}
+
+/* ================= PAGE SYSTEM ================= */
+
+let currentPage = 0;
+
+const page =
+document.getElementById("page");
+
+const photo =
+document.getElementById("photo");
+
+const dateText =
+document.getElementById("date");
+
+const words =
+document.getElementById("words");
+
+const polaroid =
+document.getElementById("polaroid");
+
+const flash =
+document.getElementById("flash");
+
+/* ================= UPDATE PAGE ================= */
+
+function updatePage(){
+
+photo.src =
+memories[currentPage].photo;
+
+dateText.innerHTML =
+memories[currentPage].date;
+
+words.innerHTML =
+memories[currentPage].text;
+
+/* TIMELINE */
+
+document
+.querySelectorAll(".dot")
+.forEach(dot=>dot.classList.remove("active"));
+
+document
+.querySelectorAll(".dot")[currentPage]
+.classList.add("active");
+
+/* PHOTO DROP RESET */
+
+polaroid.style.animation="none";
+
+void polaroid.offsetWidth;
+
+polaroid.style.animation=
+"dropPhoto 1s ease";
+
+}
+
+/* ================= NEXT ================= */
+
+function nextPage(){
+
+if(currentPage < memories.length-1){
+
+flash.classList.add("active");
+
+createPetals();
+
+page.classList.add("turn");
+
+setTimeout(()=>{
+
+currentPage++;
+
+updatePage();
+
+},600);
+
+setTimeout(()=>{
+
+page.classList.remove("turn");
+
+flash.classList.remove("active");
+
+},1200);
+
+}else{
+
+setTimeout(()=>{
+
+document
+.getElementById("bookSection")
+.style.display="none";
+
+document
+.getElementById("endScreen")
+.style.display="flex";
+
+},1000);
+
+}
+
+}
+
+/* ================= PREV ================= */
+
+function prevPage(){
+
+if(currentPage > 0){
+
+flash.classList.add("active");
+
+createPetals();
+
+page.classList.add("turn");
+
+setTimeout(()=>{
+
+currentPage--;
+
+updatePage();
+
+},600);
+
+setTimeout(()=>{
+
+page.classList.remove("turn");
+
+flash.classList.remove("active");
+
+},1200);
+
+}
+
+}
+
+/* ================= 3D MOUSE TILT ================= */
+
+document.addEventListener("mousemove",(e)=>{
+
+if(window.innerWidth > 768){
+
+const x =
+(window.innerWidth/2 - e.pageX)/25;
+
+const y =
+(window.innerHeight/2 - e.pageY)/25;
+
+page.style.transform =
+`rotateY(${x}deg) rotateX(${-y}deg)`;
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
